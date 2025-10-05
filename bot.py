@@ -1,41 +1,34 @@
 # bot.py
-import os
 import telebot
 import logging
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-TOKEN = os.getenv("7606865104:AAGQkoSCcTqC7WzEo_0aiRGK1zAuoHF-qME")
-
-if not TOKEN:
-    logger.error("Token not found! Set TELEGRAM_BOT_TOKEN environment variable or token.txt file.")
-    print("Options:")
-    print("1) In CMD: set TELEGRAM_BOT_TOKEN=YOUR_TOKEN")
-    print("2) Create token.txt in same folder containing token")
-    exit(1)
+# ⚠️ Hard-coded token (local/demo use only)
+TOKEN = "7606865104:AAGQkoSCcTqC7WzEo_0aiRGK1zAuoHF-qME"
 
 bot = telebot.TeleBot(TOKEN)
 
-# /start handler
+# /start command handler
 @bot.message_handler(commands=['start'])
 def start(message):
     logger.info("Received /start from %s", message.from_user.username)
     bot.reply_to(message, "hii")
 
-# Hello/Hi/Hey handler
-@bot.message_handler(func=lambda m: m.text and m.text.lower().strip() in ["hello", "hi", "hey"])
+# Hello/Hi/Hey messages handler
+@bot.message_handler(func=lambda m: m.text and m.text.lower().strip() in ["hello","hi","hey"])
 def reply_hello(message):
     logger.info("Received greeting from %s: %s", message.from_user.username, message.text)
     bot.reply_to(message, "hii")
 
-# Default handler
+# Optional: fallback handler (do nothing for other messages)
 @bot.message_handler(func=lambda m: True)
 def fallback(message):
-    pass  # do nothing for other messages
+    pass
 
 if __name__ == "__main__":
-    logger.info("Bot starting...")
+    logger.info("Bot running... (press CTRL+C to stop)")
     try:
         bot.infinity_polling(timeout=60, long_polling_timeout=60)
     except KeyboardInterrupt:
