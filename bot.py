@@ -10,19 +10,16 @@ TOKEN = "7606865104:AAGQkoSCcTqC7WzEo_0aiRGK1zAuoHF-qME"
 
 bot = telebot.TeleBot(TOKEN)
 
-# /start command handler
 @bot.message_handler(commands=['start'])
 def start(message):
     logger.info("Received /start from %s", message.from_user.username)
     bot.reply_to(message, "hii")
 
-# Hello/Hi/Hey messages handler
 @bot.message_handler(func=lambda m: m.text and m.text.lower().strip() in ["hello","hi","hey"])
 def reply_hello(message):
     logger.info("Received greeting from %s: %s", message.from_user.username, message.text)
     bot.reply_to(message, "hii")
 
-# Optional: fallback handler (do nothing for other messages)
 @bot.message_handler(func=lambda m: True)
 def fallback(message):
     pass
